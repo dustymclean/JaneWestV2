@@ -1,167 +1,237 @@
 
-import React, { useState } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { COLLECTIONS_EXTENDED } from '../constants';
 
-const CollectionsPage: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+const DecoPattern = ({ type, color }: { type: number, color: string }) => {
+  if (type === 0) { // Sunburst
+    return (
+      <svg className={`absolute inset-0 w-full h-full opacity-[0.03] ${color}`} viewBox="0 0 100 100" fill="currentColor">
+        <path d="M50 0 L52 48 L100 50 L52 52 L50 100 L48 52 L0 50 L48 48 Z" />
+        <circle cx="50" cy="50" r="2" />
+      </svg>
+    );
+  }
+  if (type === 1) { // Linear Grid
+    return (
+      <div className={`absolute inset-0 opacity-[0.05] ${color}`} style={{ backgroundImage: 'linear-gradient(90deg, currentColor 1px, transparent 1px), linear-gradient(currentColor 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+    );
+  }
+  return ( // Fans
+    <svg className={`absolute inset-0 w-full h-full opacity-[0.03] ${color}`} viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.5">
+      <circle cx="50" cy="100" r="40" />
+      <circle cx="50" cy="100" r="30" />
+      <circle cx="50" cy="100" r="20" />
+      <line x1="50" y1="100" x2="10" y2="60" />
+      <line x1="50" y1="100" x2="90" y2="60" />
+      <line x1="50" y1="100" x2="50" y2="50" />
+    </svg>
+  );
+};
+
+const CollectionsPage: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
+  const accentColor = isDarkMode ? "#C5A381" : "#B76E79";
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 140; // Slightly larger offset for the mobile sticky nav
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
-    <div className={`min-h-screen transition-colors duration-1000 ${isDarkMode ? 'bg-[#050505] text-rose-50' : 'bg-[#fffafb] text-rose-950'}`}>
-      {/* Decorative Background Refraction */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-20">
-        <div className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-rose-200 to-transparent blur-[150px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tr from-rose-300/30 to-transparent blur-[120px]"></div>
-      </div>
-
-      <section className="relative z-10 pt-40 pb-32 px-6 sm:px-12">
+    <div className={`min-h-screen transition-colors duration-1000 ${isDarkMode ? 'text-[#FEE2E2]' : 'text-[#1A050A]'}`}>
+      <section className="relative z-10 pt-44 pb-32 px-6 sm:px-12">
         <div className="max-w-7xl mx-auto">
-          {/* Hero Section */}
-          <header className="mb-32">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
-              <div className="max-w-4xl">
-                <div className="flex items-center space-x-4 mb-8">
-                  <div className="w-12 h-[1px] bg-rose-500"></div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.8em] text-rose-500">The Catalog</span>
-                </div>
-                <h1 className={`text-5xl md:text-9xl font-bold serif italic leading-tight mb-8 ${isDarkMode ? 'text-white' : 'text-rose-950'}`}>
-                  Designing the <br /> Modern Ritual.
-                </h1>
-                <p className={`text-lg md:text-xl font-medium max-w-2xl leading-relaxed ${isDarkMode ? 'text-rose-100/40' : 'text-rose-900/50'}`}>
-                  For over a decade, Jane West has balanced the precision of scientific glass with the elegance of Art Deco design, creating a new vernacular for sophisticated consumption.
-                </p>
-              </div>
-              <button 
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className={`group flex items-center space-x-4 px-8 py-4 rounded-full border transition-all duration-500 ${
-                  isDarkMode ? 'border-rose-800 text-rose-400 hover:bg-rose-900/20' : 'border-rose-200 text-rose-900 hover:bg-rose-50'
-                }`}
+          {/* Header Section */}
+          <header className="mb-24">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-16">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="max-w-4xl"
               >
-                <span className="text-[10px] font-black uppercase tracking-widest">
-                  {isDarkMode ? 'Lunar View' : 'Solar View'}
-                </span>
-                <div className={`w-3 h-3 rounded-full transition-all duration-500 ${isDarkMode ? 'bg-rose-400 shadow-[0_0_10px_rgba(251,113,133,0.5)]' : 'bg-rose-900'}`}></div>
-              </button>
+                <div className="flex items-center space-x-8 mb-12">
+                  <div className="w-20 h-[2px]" style={{ backgroundColor: accentColor }}></div>
+                  <span className="text-[11px] font-black uppercase tracking-[1em]" style={{ color: accentColor }}>Architectural Archive</span>
+                </div>
+                <h1 className={`text-6xl md:text-[10.5rem] font-black serif italic leading-[0.8] mb-14 tracking-tighter transition-colors duration-1000`}>
+                  Curating the <br /> <span style={{ color: accentColor }}>Modern Ritual.</span>
+                </h1>
+                <p className={`text-xl md:text-3xl font-bold max-w-2xl leading-relaxed opacity-60 transition-colors duration-1000`}>
+                  A decade of industrial precision. Jane West harmonizes the rugged durability of scientific borosilicate with the immortal elegance of Art Deco architecture.
+                </p>
+              </motion.div>
             </div>
           </header>
 
-          {/* Philosophy Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-48">
-            {[
-              { title: 'MATERIALITY', desc: 'Sourcing laboratory-grade borosilicate for thermal shock resistance and unparalleled clarity.' },
-              { title: 'DISCRETION', desc: 'Objects designed to sit proudly on your bookshelf or disappear seamlessly into your daily carry.' },
-              { title: 'AESTHETIC', desc: 'A design language rooted in Art Deco symmetry and mid-century modern architectural silhouettes.' }
-            ].map((tenet, i) => (
-              <div key={i} className={`p-10 rounded-[32px] border ${isDarkMode ? 'border-rose-900/20 bg-rose-950/10' : 'border-rose-100 bg-white shadow-sm'}`}>
-                <h3 className="text-[10px] font-black tracking-[0.4em] text-rose-500 mb-6">{tenet.title}</h3>
-                <p className={`text-sm leading-relaxed font-medium ${isDarkMode ? 'text-rose-100/50' : 'text-rose-900/60'}`}>{tenet.desc}</p>
-              </div>
-            ))}
+          {/* Luxury Navigation Bar - Optimized for Mobile Scrolling */}
+          <div className="sticky top-24 md:top-28 z-40 mb-20 md:mb-36 px-2">
+            <div className={`p-1.5 md:p-2.5 rounded-full border backdrop-blur-[30px] flex overflow-x-auto scrollbar-hide space-x-2 md:space-x-3 transition-colors duration-1000 ${isDarkMode ? 'bg-black/60 border-white/10' : 'bg-white/80 border-[#D9BBAE]/20 shadow-2xl'}`}>
+              {COLLECTIONS_EXTENDED.map((col) => (
+                <button
+                  key={col.id}
+                  onClick={() => scrollToSection(col.id)}
+                  className={`flex-shrink-0 px-6 md:px-10 py-4 md:py-5 rounded-full text-[9px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.4em] uppercase transition-all duration-500 whitespace-nowrap ${
+                    isDarkMode ? 'text-[#FEE2E2]/60 hover:bg-[#C5A381]/20 hover:text-[#C5A381]' : 'text-[#1A050A]/60 hover:bg-[#B76E79]/10 hover:text-[#1A050A]'
+                  }`}
+                >
+                  {col.category}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Main Collection Display */}
-          <div className="space-y-48">
+          <div className="space-y-48 md:space-y-72">
             {COLLECTIONS_EXTENDED.map((col, idx) => (
-              <article 
+              <motion.article 
+                id={col.id}
                 key={col.id} 
-                className={`max-w-4xl mx-auto`}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "-120px" }}
+                className={`relative group scroll-mt-48 md:scroll-mt-36 ${idx % 2 === 0 ? 'text-left' : 'text-right'}`}
               >
-                {/* Content Area */}
-                <div className="flex flex-col justify-center">
-                  <div className="mb-12">
-                    <div className="flex items-center space-x-4 mb-6">
-                      <span className="text-[10px] font-black uppercase tracking-[0.5em] text-rose-500">
+                <div className={`absolute inset-y-0 ${idx % 2 === 0 ? '-left-24' : '-right-24'} w-1/2 opacity-5 pointer-events-none overflow-hidden`}>
+                   <DecoPattern type={idx % 3} color={isDarkMode ? 'text-[#C5A381]' : 'text-[#B76E79]'} />
+                </div>
+
+                <div className={`max-w-6xl mx-auto flex flex-col ${idx % 2 === 0 ? 'items-start' : 'items-end'}`}>
+                  <div className="w-full">
+                    <div className={`flex items-center space-x-8 mb-10 md:mb-14 ${idx % 2 === 0 ? '' : 'flex-row-reverse space-x-reverse'}`}>
+                      <span className="text-[12px] font-black uppercase tracking-[0.8em]" style={{ color: accentColor }}>
                         {col.category}
                       </span>
-                      <div className="h-px flex-grow bg-rose-500/10"></div>
-                      <span className="text-[10px] font-black uppercase tracking-[0.5em] text-rose-500/30">
-                        Series // 00{idx + 1}
+                      <div className="h-px w-16 md:w-28" style={{ backgroundColor: isDarkMode ? `${accentColor}33` : `${accentColor}33` }}></div>
+                      <span className="text-[11px] font-bold uppercase tracking-[0.5em] opacity-30">
+                        SERIES // 0{idx + 1}
                       </span>
                     </div>
                     
-                    <h2 className="text-4xl md:text-7xl font-bold serif italic mb-8">{col.title}</h2>
-                    <p className={`text-xl md:text-2xl mb-12 leading-relaxed font-medium italic ${isDarkMode ? 'text-rose-100/70' : 'text-rose-900/70'}`}>
-                      {col.subtitle}
-                    </p>
-
-                    <div className="grid grid-cols-2 gap-8 mb-12 border-y border-rose-500/10 py-8">
-                      <div className="space-y-2">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-rose-400">Primary Material</span>
-                        <p className={`text-xs font-bold uppercase tracking-widest ${isDarkMode ? 'text-white' : 'text-rose-950'}`}>Borosilicate 3.3</p>
-                      </div>
-                      <div className="space-y-2">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-rose-400">Design Era</span>
-                        <p className={`text-xs font-bold uppercase tracking-widest ${isDarkMode ? 'text-white' : 'text-rose-950'}`}>Art Deco / MCM</p>
-                      </div>
-                    </div>
+                    <a href={col.mainLink} target="_blank" rel="noreferrer" className="block group/title">
+                      <h2 className="text-4xl md:text-[9rem] font-black serif italic mb-8 md:mb-14 leading-none tracking-tighter transition-colors duration-1000 group-hover/title:text-[#C5A381]">{col.title}</h2>
+                    </a>
                     
-                    <p className={`text-lg leading-relaxed mb-12 ${isDarkMode ? 'text-rose-100/40' : 'text-rose-900/50'}`}>
-                      {col.description}
-                    </p>
+                    <div className={`max-w-4xl ${idx % 2 === 0 ? '' : 'ml-auto'}`}>
+                      <p className={`text-2xl md:text-6xl mb-12 md:mb-24 leading-tight font-bold italic tracking-tight opacity-90 transition-colors duration-1000`}>
+                        {col.subtitle}
+                      </p>
 
-                    <div className="flex flex-wrap gap-3 mb-12">
-                      {col.featuredItems.map((item) => (
-                        <span key={item} className={`text-[9px] font-black px-5 py-3 rounded-full tracking-widest border transition-all ${
-                          isDarkMode 
-                            ? 'border-rose-900/40 bg-rose-950/20 text-rose-400 hover:border-rose-500 hover:text-rose-200' 
-                            : 'border-rose-100 bg-white text-rose-800 hover:border-rose-300 hover:bg-rose-50'
-                        }`}>
-                          {item}
-                        </span>
-                      ))}
+                      <div className={`grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-20 mb-12 md:mb-24 border-y py-12 md:py-20 transition-colors duration-1000 ${isDarkMode ? 'border-white/10' : 'border-black/5'}`}>
+                        <div className="space-y-4 md:space-y-6">
+                          <span className="text-[10px] font-black uppercase tracking-[0.3em]" style={{ color: accentColor }}>Material Engineering</span>
+                          <p className="text-xs md:text-base font-black uppercase tracking-[0.3em]">Lab-Grade Borosilicate 3.3</p>
+                        </div>
+                        <div className="space-y-4 md:space-y-6">
+                          <span className="text-[10px] font-black uppercase tracking-[0.3em]" style={{ color: accentColor }}>Design Philosophy</span>
+                          <p className="text-xs md:text-base font-black uppercase tracking-[0.3em]">Architectural Art Deco</p>
+                        </div>
+                      </div>
+                      
+                      <p className="text-lg md:text-2xl leading-relaxed mb-12 md:mb-24 font-bold tracking-tight opacity-50">
+                        {col.description}
+                      </p>
+
+                      <div className={`flex flex-wrap gap-4 md:gap-6 mb-20 md:mb-28 ${idx % 2 === 0 ? '' : 'justify-end'}`}>
+                        {col.featuredItems.map((item) => {
+                          const link = col.itemLinks?.[item];
+                          return (
+                            <a 
+                              key={item} 
+                              href={link} 
+                              target="_blank" 
+                              rel="noreferrer"
+                              className={`text-[9px] md:text-[10px] font-black px-8 md:px-12 py-4 md:py-6 rounded-full tracking-[0.4em] border transition-all duration-700 shadow-xl ${
+                                isDarkMode 
+                                  ? 'border-[#B76E79]/20 bg-black/40 text-[#C5A381] hover:border-[#C5A381] hover:bg-black/60' 
+                                  : 'border-[#D9BBAE]/20 bg-white text-[#1A050A] hover:border-[#B76E79] hover:bg-[#FDF2F2]'
+                              }`}
+                            >
+                              {item}
+                            </a>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Curators Insight / SEO Cluster */}
-                  <div className={`p-10 rounded-[40px] relative overflow-hidden ${
-                    isDarkMode ? 'bg-rose-950/30' : 'bg-rose-50/50'
-                  }`}>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-rose-400 mb-6 block underline decoration-rose-500/30 underline-offset-4">Designer's Journal</span>
-                    <p className={`text-[12px] md:text-sm font-medium uppercase tracking-[0.12em] leading-loose italic ${
-                      isDarkMode ? 'text-rose-100/30' : 'text-rose-900/40'
-                    }`}>
-                      {col.seoCluster}
-                    </p>
-                  </div>
+                  <motion.div 
+                    whileHover={{ scale: 1.015 }}
+                    className={`p-10 md:p-24 rounded-[40px] md:rounded-[64px] relative overflow-hidden w-full text-left transition-all duration-1000 backdrop-blur-[30px] ${
+                      isDarkMode ? 'bg-white/5 border border-white/10' : 'bg-white/40 border border-[#D9BBAE]/20'
+                    }`}
+                  >
+                    <div className="relative z-10">
+                      <div className="flex items-center space-x-6 mb-8 md:mb-12">
+                        <div className="w-12 h-px" style={{ backgroundColor: accentColor }}></div>
+                        <span className="text-[11px] font-black uppercase tracking-[0.8em]" style={{ color: accentColor }}>The Designer's Manifesto</span>
+                      </div>
+                      <p className={`text-xs md:text-lg font-bold uppercase tracking-[0.25em] leading-loose italic opacity-30 transition-colors duration-1000`}>
+                        {col.seoCluster}
+                      </p>
+                    </div>
+                  </motion.div>
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
 
-          {/* Technical Masterclass Section */}
-          <div className={`mt-64 p-12 md:p-24 rounded-[60px] text-center space-y-12 border ${
-            isDarkMode ? 'bg-gradient-to-b from-rose-950/20 to-transparent border-rose-900/30' : 'bg-white border-rose-100 shadow-2xl'
-          }`}>
-            <h3 className="text-[10px] font-black uppercase tracking-[0.8em] text-rose-500">Crafting Excellence</h3>
-            <h4 className="text-4xl md:text-7xl font-bold serif italic text-rose-950 leading-tight">
-              Architected to be <br /> timeless.
-            </h4>
-            <div className="max-w-3xl mx-auto space-y-8">
-               <p className={`text-lg leading-relaxed ${isDarkMode ? 'text-rose-100/50' : 'text-rose-900/60'}`}>
-                 Every Jane West piece undergoes rigorous quality control to ensure that the intersection of form and function is never compromised. Our borosilicate glass is hand-blown and machine-finished for mathematical precision.
-               </p>
-               <div className="flex justify-center space-x-12 pt-12">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold mb-1">10+</div>
-                    <div className="text-[9px] font-black uppercase tracking-widest text-rose-400">Years of Design</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold mb-1">3.3</div>
-                    <div className="text-[9px] font-black uppercase tracking-widest text-rose-400">Expansion Grade</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold mb-1">01</div>
-                    <div className="text-[9px] font-black uppercase tracking-widest text-rose-400">Jane West</div>
-                  </div>
-               </div>
+          {/* Credo Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className={`mt-48 md:mt-72 p-10 md:p-48 rounded-[60px] md:rounded-[100px] text-center space-y-20 md:space-y-24 border relative overflow-hidden transition-all duration-1000 backdrop-blur-[30px] ${
+              isDarkMode ? 'bg-black/50 border-white/10' : 'bg-white/70 border-[#D9BBAE]/20 shadow-2xl'
+            }`}
+          >
+            <div className="relative z-10 space-y-16 md:space-y-20">
+              <h3 className="text-[12px] font-black uppercase tracking-[1.2em]" style={{ color: accentColor }}>The Jane West Credo</h3>
+              <div className="space-y-10 md:space-y-12">
+                <h4 className={`text-4xl md:text-[11rem] font-black serif italic leading-[0.75] tracking-tighter transition-colors duration-1000`}>
+                  Architected to be <br /> timeless.
+                </h4>
+                <div className="max-w-5xl mx-auto space-y-10 md:space-y-12">
+                   <p className="text-lg md:text-3xl leading-relaxed font-bold tracking-tight opacity-60">
+                     Every Jane West piece undergoes rigorous quality control to ensure that the intersection of form and function is never compromised. Our borosilicate glass is hand-blown and machine-finished for mathematical precision.
+                   </p>
+                </div>
+              </div>
+
+              {/* Stat Grid Restoration */}
+              <div className={`grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 pt-16 md:pt-24 border-t transition-colors duration-1000 ${isDarkMode ? 'border-white/10' : 'border-black/5'}`}>
+                <div className="space-y-4 md:space-y-6">
+                  <div className="text-5xl md:text-8xl font-black serif italic tracking-tighter">10+</div>
+                  <div className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.6em] opacity-40">Years of Design</div>
+                </div>
+                <div className="space-y-4 md:space-y-6">
+                  <div className="text-5xl md:text-8xl font-black serif italic tracking-tighter">3.3</div>
+                  <div className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.6em] opacity-40">Expansion Grade</div>
+                </div>
+                <div className="space-y-4 md:space-y-6">
+                  <div className="text-5xl md:text-8xl font-black serif italic tracking-tighter">01</div>
+                  <div className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.6em] opacity-40">Jane West</div>
+                </div>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
-
-      {/* Footer Decoration */}
-      <footer className="py-20 text-center opacity-30">
-        <div className="text-[10px] font-black uppercase tracking-[1em]">The End of the Ordinary</div>
-      </footer>
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </div>
   );
 };

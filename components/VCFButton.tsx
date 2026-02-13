@@ -2,7 +2,7 @@
 import React from 'react';
 import { JANE_WEST_CONTACT } from '../constants';
 
-const VCFButton: React.FC<{ light?: boolean }> = ({ light = false }) => {
+const VCFButton: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
   const downloadVCF = () => {
     const blob = new Blob([JANE_WEST_CONTACT.vcf], { type: 'text/vcard' });
     const url = window.URL.createObjectURL(blob);
@@ -17,13 +17,13 @@ const VCFButton: React.FC<{ light?: boolean }> = ({ light = false }) => {
   return (
     <button
       onClick={downloadVCF}
-      className={`px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase transition-all duration-300 border ${
-        light 
-          ? 'bg-rose-50 text-rose-600 border-rose-200 hover:bg-rose-100' 
-          : 'bg-rose-600 text-white border-rose-600 hover:bg-rose-700'
+      className={`px-8 py-4 rounded-full text-[10px] font-black tracking-[0.3em] uppercase transition-all duration-700 shadow-xl active:scale-95 ${
+        isDarkMode 
+          ? 'bg-[#C5A381] text-[#0D0204] hover:bg-white' 
+          : 'bg-[#1A050A] text-white hover:bg-[#C5A381] hover:text-[#1A050A]'
       }`}
     >
-      Download VCF
+      Save Contact
     </button>
   );
 };

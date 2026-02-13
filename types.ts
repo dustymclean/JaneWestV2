@@ -7,6 +7,8 @@ export interface Collection {
   featuredItems: string[];
   status?: string;
   colorTheme: string;
+  mainLink?: string;
+  itemLinks?: Record<string, string>;
 }
 
 export interface ProductSEO {
