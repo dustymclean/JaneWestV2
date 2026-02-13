@@ -1,4 +1,3 @@
-
 import { Collection } from './types';
 
 export const JANE_WEST_CONTACT = {
@@ -32,10 +31,10 @@ export const COLLECTIONS_EXTENDED: CollectionItem[] = [
     description: 'Our flagship collection redefined the aesthetic of the modern consumer. Featuring luxury borosilicate glass that doubles as home decor.',
     featuredItems: ['WATER PIPES', 'BUBBLERS', 'BEAKERS', 'ASHTRAYS'],
     itemLinks: {
-      'WATER PIPES': 'https://janewest.com/collections/the-twenties-collection',
-      'BUBBLERS': 'https://janewest.com/collections/the-twenties-collection',
-      'BEAKERS': 'https://janewest.com/collections/the-twenties-collection',
-      'ASHTRAYS': 'https://janewest.com/collections/the-twenties-collection'
+      'WATER PIPES': 'https://janewest.com/products/twenties-collection-water-pipe',
+      'BUBBLERS': 'https://janewest.com/products/twenties-collection-bubbler',
+      'BEAKERS': 'https://janewest.com/products/twenties-collection-hand-pipe',
+      'ASHTRAYS': 'https://janewest.com/products/twenties-collection-ashtray'
     },
     status: 'SELECTED',
     colorTheme: 'from-amber-100 to-amber-200',

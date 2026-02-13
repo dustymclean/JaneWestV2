@@ -38,7 +38,12 @@ const pathways = [
   },
 ];
 
-const ContactPage: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
+interface ContactPageProps {
+  isDarkMode: boolean;
+  setPage?: (page: string) => void;
+}
+
+const ContactPage: React.FC<ContactPageProps> = ({ isDarkMode, setPage }) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [status, setStatus] = useState<'IDLE' | 'SENDING' | 'SUCCESS' | 'ERROR'>('IDLE');
   const [errorMessage, setErrorMessage] = useState('');
@@ -205,15 +210,13 @@ const ContactPage: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { label: 'Official Store', url: 'https://janewest.com' },
-              { label: 'Instagram', url: '#' },
-              { label: 'Women Grow', url: '#' },
-              { label: 'Press Kit', url: '#' }
+              { label: 'Instagram', url: 'https://www.instagram.com/betterwithjane/?hl=en' },
+              { label: 'Women Grow', url: 'https://womengrow.org' },
+              { label: 'Press Kit', action: () => setPage?.('press') }
             ].map((link, i) => (
-              <a 
+              <button 
                 key={i}
-                href={link.url}
-                target="_blank"
-                rel="noreferrer"
+                onClick={link.action ? link.action : () => window.open(link.url, '_blank')}
                 className={`p-8 rounded-[30px] border flex flex-col justify-between items-center text-center transition-all duration-500 hover:-translate-y-2 group ${
                   isDarkMode ? 'bg-white/5 border-white/10 hover:border-[#C5A381]' : 'bg-white border-black/5 hover:border-[#B76E79]'
                 }`}
@@ -221,7 +224,7 @@ const ContactPage: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
                 <span className="text-[9px] font-black uppercase tracking-[0.3em] opacity-30 group-hover:opacity-100 transition-opacity">External Landscape</span>
                 <span className="text-lg font-black uppercase tracking-widest pt-4">{link.label}</span>
                 <div className="w-10 h-px mt-6 opacity-20" style={{ backgroundColor: accentColor }}></div>
-              </a>
+              </button>
             ))}
           </div>
         </div>

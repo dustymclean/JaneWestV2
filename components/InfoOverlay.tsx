@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { JANE_WEST_CONTACT } from '../constants';
 
 const InfoOverlay: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const contactEmail = "notary@northmsnotary.com";
+  const contactEmail = JANE_WEST_CONTACT.email;
   const accentColor = isDarkMode ? "#C5A381" : "#B76E79";
   const qrColor = isDarkMode ? "fee2e2" : "1a050a";
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`mailto:${contactEmail}`)}&color=${qrColor}&bgcolor=ffffff00&qzone=1`;
