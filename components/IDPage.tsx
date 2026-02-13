@@ -41,16 +41,16 @@ const IDPage: React.FC = () => {
 
       <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl w-full text-center">
         <div className="p-6">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-rose-950 mb-2">Phantom Effect</h3>
-          <p className="text-xs text-rose-800/50 leading-relaxed font-medium">Transparent from reverse, information-rich from front. A dual-plane borosilicate marvel.</p>
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-rose-950 mb-2">The Architect</h3>
+          <p className="text-xs text-rose-800/50 leading-relaxed font-medium">Founder of Women Grow and pioneer of the modern cannabis lifestyle, Jane West has been architecting the future of sophisticated consumption since 2014.</p>
         </div>
         <div className="p-6">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-rose-950 mb-2">Metallic Etch</h3>
-          <p className="text-xs text-rose-800/50 leading-relaxed font-medium">Rose gold laser etching at 1200 DPI ensures crisp readability and luxury aesthetic.</p>
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-rose-950 mb-2">Design Ethos</h3>
+          <p className="text-xs text-rose-800/50 leading-relaxed font-medium">Merging the precision of laboratory-grade borosilicate glass with timeless Art Deco silhouettes to create functional art for the discerning home.</p>
         </div>
         <div className="p-6">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-rose-950 mb-2">VCF Integrated</h3>
-          <p className="text-xs text-rose-800/50 leading-relaxed font-medium">Universal contact card deployment optimized for both iOS and Android ecosystems.</p>
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-rose-950 mb-2">Modern Ritual</h3>
+          <p className="text-xs text-rose-800/50 leading-relaxed font-medium">Designing discreet, high-performance tools and wellness accessories that transform daily routines into luxurious, refined experiences.</p>
         </div>
       </div>
     </section>

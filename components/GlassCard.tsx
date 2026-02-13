@@ -74,17 +74,44 @@ const GlassCard: React.FC = () => {
 
           {/* Back Face (Phantom View) */}
           <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-[24px] overflow-hidden glass-glow rose-gold-glass shadow-2xl">
-            {/* Blank Phantom Glass Effect - Content hidden on purpose as per specification */}
+            {/* Blank Phantom Glass Effect */}
             <div className="absolute inset-0 backdrop-blur-3xl bg-pink-100/10"></div>
             
+            {/* Content Container */}
+            <div className="relative z-10 w-full h-full p-8 sm:p-10 flex flex-col justify-center items-center text-rose-950 text-center">
+              <div className="space-y-8 w-full">
+                {/* Upper Line */}
+                <div className="space-y-1">
+                  <div className="serif italic text-lg sm:text-xl font-bold etch-shadow">Jane West</div>
+                  <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.3em] opacity-60">CEO & Founder of Jane West | EST. 2014</div>
+                </div>
+
+                {/* Tagline */}
+                <div className="py-4 border-y border-rose-950/10">
+                  <div className="text-sm sm:text-lg font-black uppercase tracking-[0.5em] text-rose-500">
+                    THE END OF THE ORDINARY
+                  </div>
+                </div>
+
+                {/* Lower Line */}
+                <div className="space-y-1">
+                  <div className="serif italic text-lg sm:text-xl font-bold etch-shadow">Jane West</div>
+                  <div className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.3em] opacity-60">CEO & Founder of Women Grow. | EST. 2014</div>
+                </div>
+              </div>
+            </div>
+
             {/* Inner Depth Effects */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-rose-200/20 via-transparent to-white/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-rose-200/20 via-transparent to-white/30 pointer-events-none"></div>
             
             {/* Holographic light play */}
-            <div className="absolute inset-0 opacity-30">
+            <div className="absolute inset-0 opacity-30 pointer-events-none">
                 <div className="absolute -top-20 -right-20 w-64 h-64 bg-white blur-[100px] rounded-full"></div>
                 <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-rose-300 blur-[100px] rounded-full"></div>
             </div>
+            
+            {/* Sweep Reflection Animation (Reverse) */}
+            <div className="absolute top-0 -left-[100%] w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-35deg] group-hover:left-[200%] transition-all duration-1500 ease-in-out"></div>
           </div>
         </div>
       </div>
